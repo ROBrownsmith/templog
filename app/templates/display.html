@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+	
+<h2>Daily Minimum & Maximum Fridge Temperature ᵒC by Location</h2>
+
+	<table>
+	  <tr>
+	    <th>Index</th>
+	    <th>Date</th>
+	    <th>Location</th>
+	    <th>Minimum Temperature</th>
+            <th>Maximum Temperature</th>
+	  </tr>
+	 {% if displaytc %}
+    		{% for d in displaytc %}
+ 	   <tr>
+			    <td>{{ d.id }}</td>
+			    <td>{{ d.date_of_reading }}</td>
+			    <td>{{ d.location}}</td>
+			    <td>{{ d.mintemp }}</td>
+			    <td>{{ d.maxtemp }}</td>
+	   </tr>
+    		{% endfor %}
+	{% endif %}
+	 
+       	</table>
+{% endblock %}
