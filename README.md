@@ -19,7 +19,8 @@ Steve Breuning's reaspberrywebserver http://raspberrywebserver.com/
 Harry's Developer blog https://wingoodharry.wordpress.com/
 
 
-Instructions are given for Amazon Lightsail as a cost effective option that I did manage to get up and running.
+# Instructions are given for Amazon Lightsail 
+as a cost effective option that I did manage to get up and running.
 
 *Sign up for lightsail account
 
@@ -27,19 +28,19 @@ https://aws.amazon.com/lightsail/
 
 *Assign static IP to instance 
 
-*Open firewall ports on aws dashboard
+*Buy a domain name and configure A setting to redirect to your static IP
+
+*Open firewall ports on AWS dashboard
 
 22, 80, 443
+
+# Configure software to serve templog app
 
 *Connect via SSH 
 
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
 
-*Buy a domain name and configure A setting to redirect to your static IP
-
-# Configure software to serve templog app
-
-*Create a User other than root for security
+*Create a remote User other than root for security
 
       $ adduser --gecos "" templogger
 
@@ -47,16 +48,15 @@ https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
 
       $ su templogger
 
-
 *Copy public ssh cert for no password login
 
-Local machine check for keys
+On your Local machine, in a terminal,  check for keys
 
     $ ls ~/.ssh
 
-If keys present will list id_rsa.pub
+If keys present will list file called "id_rsa.pub"
 
-If not run
+If not present, do
 
     $ ssh-keygen
 
@@ -76,9 +76,9 @@ log out of root user
 
     $ exit
 
-*Stop root log in for security
+*Stop root log in at remote for security
 
-log back in without password
+log back in to remote without password
 
     $ ssh templogger@<server-ip-address>
 
