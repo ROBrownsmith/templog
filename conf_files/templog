@@ -1,0 +1,42 @@
+server {
+    # listen on port 80 (http)
+    listen 80;
+    # replace example.com on next line with own domain
+    server_name example.com; 
+    location ~ /.well-known {
+        root /home/templogger/templog/certs/letsencrypt;
+    }
+    location / {
+        # redirect any requests to the same URL but on https
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    # listen on port 443 (https)
+    listen 443 ssl;
+    # replace example.com on next line with own domain
+    server_name example.com; 
+
+    # location of the self-signed SSL certificate
+    ssl_certificate /home/templogger/templog/certs/cert.pem;
+    ssl_certificate_key /home/templogger/templog/certs/key.pem;
+
+    # write access and error logs to /var/log
+    access_log /var/log/templog_access.log;
+    error_log /var/log/templog_error.log;
+
+    location / {
+        # forward application requests to the gunicorn server
+        proxy_pass http://localhost:8000;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static {
+        # handle static files directly, without forwarding to the application
+        alias /home/templogger/templog/app/static;
+        expires 30d;
+    }
+}
