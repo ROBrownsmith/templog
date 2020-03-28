@@ -56,9 +56,11 @@ On your Local machine, in a terminal,  check for keys
 
 If keys present will list file called "id_rsa.pub"
 
-If not present, do
+Only if not present, do
 
     $ ssh-keygen
+    
+In either case
 
     $ cat ~/.ssh/id_rsa.pub
 
