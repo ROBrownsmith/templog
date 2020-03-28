@@ -15,7 +15,7 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-#    user = {'username': 'Robbie'}
+#    user = {'username': 'TESTUSER'}
     return render_template('index.html', title='Home')#, user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -59,6 +59,4 @@ def insertTemp():
 @login_required
 def displayTemp():
     displaytc = Dailymaxmindata.query.all()
-#    for d in displaytc:
-#        print (d.id, d.date_of_reading, d.location, d.mintemp, d.maxtemp)
     return render_template('display.html', title='Temperature Logs', displaytc=displaytc)
