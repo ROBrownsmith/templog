@@ -2,12 +2,12 @@
 
 The templogclient needs to communicate with the templog flask app at a static IP address using HTTP. This would be possible 
 to define on a home network or possibly within a VPN.  Domestic ISPs do not seem to offer a static IP as standard and using 
-dynamic DNS seemed to be a bit too complicated. My objective in designing the code was to enable an organisation with different
-geographic settings to deploy the templogclient on a raspberry pi zero w to measure fridge temperatures, reporting minute by 
-minute to the templog app what the temperature is. There would always be a power source present because of the fridge. The 
-Pi Zero W has wifi built in: I assumed the organisation would have a wifi network.
-The app calculates the maximum and minimum recorded temperature in each location per 24 hour period and stores it in a database
-which with password protection can be viewed in a web browser at the IP address where the app is hosted.  
+dynamic DNS seemed to be a bit too complicated. My objective in designing the code was to enable an organisation with 
+different geographic settings to deploy the templogclient on a raspberry pi zero w to measure fridge temperatures, reporting 
+minute by minute to the templog app what the sensed temperature is. There would always be a power source present because of
+the fridge. The Pi Zero W has wifi built in: I assumed the organisation would have a wifi network.
+The app calculates the maximum and minimum recorded temperature in each location per 24 hour period and stores it in a 
+database which, with password protection, can be viewed in a web browser at the IP address where the app is hosted.  
 Please feel free to fork the code and credit me where appropriate.
 
 I have relied on Miguel Grinbergs excellent Flask blog to create this code and what follows  are instructions paraphrased from: 
@@ -41,54 +41,54 @@ https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
 
 *Create a User other than root for security
 
-      adduser --gecos "" templogger
+      $ adduser --gecos "" templogger
 
-      usermod -aG sudo templogger
+      $ usermod -aG sudo templogger
 
-      su templogger
+      $ su templogger
 
 
 *Copy public ssh cert for no password login
 
 Local machine check for keys
 
-    ls ~/.ssh
+    $ ls ~/.ssh
 
 If keys present will list id_rsa.pub
 
 If not run
 
-    ssh-keygen
+    $ ssh-keygen
 
-    cat ~/.ssh/id_rsa.pub
+    $ cat ~/.ssh/id_rsa.pub
 
-Copy output and paste to remote (Lightsail) terminal
+Copy the whole output and paste to remote (Lightsail) terminal in place of <paste key> on line 67.
 
-    echo <paste key> >> ~/.ssh/authorized_keys
+    $ echo <paste key> >> ~/.ssh/authorized_keys
 
-    chmod 600 ~/.ssh/authorized_keys
+    $ chmod 600 ~/.ssh/authorized_keys
 
 log out of templogger user
 
-    exit
+    $ exit
 
 log out of root user
 
-    exit
+    $ exit
 
-*Stop root log in
+*Stop root log in for security
 
 log back in without password
 
-    ssh templogger@<server-ip-address>
+    $ ssh templogger@<server-ip-address>
 
-    sudo nano /etc/ssh/sshd_config
+    $ sudo nano /etc/ssh/sshd_config
 
 PermitRootLogin no
 
 PasswordAuthentication no
 
-    sudo service ssh restart
+    $ sudo service ssh restart
 
 
 *Firewall
@@ -125,27 +125,27 @@ exit venv
 
     exit
 
-*edit .env file secret key
+*edit .env file secret key for security
 
-    python3 -c "import uuid; print(uuid.uuid4().hex)”
+    $ python3 -c "import uuid; print(uuid.uuid4().hex)”
 
 copy the output
 
-    sudo nano ~/templog/.env
+    $ sudo nano ~/templog/.env
 
-paste into line 1
+paste into line 1 where indicated, save, then exit.
 
 *Set FLASK_APP environment variable for temp logger account
 
     $ echo "export FLASK_APP=microblog.py" >> ~/.profile
 
-    exit
+    $ exit
 
 log back in again
 
-*database?
+*database
 
-    cd templog
+    $ cd templog
 
     $ source venv/bin/activate
 
@@ -155,18 +155,17 @@ log back in again
 
     $ sudo cp /home/templogger/templog/conf_files/templog.conf  /etc/supervisor/conf.d/templog.conf
 
-
     $ sudo supervisorctl reload
 
 *Nginx
 
     $ sudo rm /etc/nginx/sites-enabled/default
 
-    sudo cp /home/templogger/templog/conf_files/templog /etc/nginx/sites-enabled/templog
+    $ sudo cp /home/templogger/templog/conf_files/templog /etc/nginx/sites-enabled/templog
 
 edit the file at line 5 and 18 to include your own domain
 
-    sudo nano /etc/nginx/sites-enabled/templog
+    $ sudo nano /etc/nginx/sites-enabled/templog
 
 *insert users into Database
 
