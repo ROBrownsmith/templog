@@ -118,10 +118,10 @@ PasswordAuthentication no
     $ python3 -m venv venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
-
-* install Gunicorn
-
-      (venv) $ pip install gunicorn
+    
+*install Green Unicorn
+    
+    (venv) $ pip install gunicorn   
 
 exit venv
 
@@ -131,11 +131,11 @@ exit venv
 
     $ python3 -c "import uuid; print(uuid.uuid4().hex)”
 
-copy the output
+copy the output, then
 
     $ sudo nano ~/templog/.env
 
-paste into line 1 where indicated, save, then exit.
+paste into line 1 of the file where indicated, save, then exit.
 
 *Set FLASK_APP environment variable for temp logger account
 
@@ -184,7 +184,8 @@ Replace example.com on line 185 of readme with your real actual domain name.
 
       $ sudo certbot certonly --webroot -w /home/templogger/templog/certs/letsencrypt -d example.com
 
-*insert users into Database. Replace username and inbox@domain.com on line 193 of readme and mypassword on line 194 with real values.
+*insert users into Database. Replace username and inbox@domain.com on line 193 of readme and mypassword on line 194 with 
+real values.
 
       $ source venv/bin/activate
 
@@ -194,3 +195,17 @@ Replace example.com on line 185 of readme with your real actual domain name.
       >>> u.set_password('mypassword')
       
 Now go to your website and log in using the details you've just added to see the temperatures recorded.
+
+# Serve from a RaspberryPi or another computer on your own network.
+
+Follow the steps above from the "configure software.." section, skipping "Gunicorn use with 1 worker, nginx, Get SSL
+certificates..." In this situation you could connect via SSH to a computer on your own network or type directly into its 
+terminal. It is possible to check the app runs using flask's built in test web server, although everything I've read states
+this is not suitable in a production app. Start it using
+
+      $ flask run --host=0.0.0.0
+
+You can then go to a web browser and enter the ip address of the computer on your network that the app is running on, 
+specifying port 5000. e.g. 192.x.x.x:5000
+
+I intend to figure out how to get Nginx to serve on a local network and then update the readme.
