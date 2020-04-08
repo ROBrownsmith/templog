@@ -1,11 +1,12 @@
 # Setting Up templog flask app using Ubuntu virtual machine on Amazon Lightsail
 
-The templogclient needs to communicate with the templog flask app at a static IP address using HTTP. This would be possible 
-to define on a home network or possibly within a VPN.  Domestic ISPs do not seem to offer a static IP as standard and using 
-dynamic DNS seemed to be a bit too complicated. My objective in designing the code was to enable an organisation with 
-different geographic settings to deploy the templogclient on a raspberry pi zero w to measure fridge temperatures, reporting 
-minute by minute to the templog app what the sensed temperature is. There would always be a power source present because of
-the fridge. The Pi Zero W has wifi built in: I assumed the organisation would have a wifi network.
+The templogclient https://github.com/ROBrownsmith/temperaturelogclient needs to communicate with this templog flask app at a
+static IP address using HTTP. This would be possible to define on a home network or possibly within a VPN.  
+Domestic ISPs do not seem to offer a static IP as standard and using dynamic DNS seemed to be a bit too complicated. 
+My objective in designing the code was to enable an organisation with different geographic settings to deploy the
+templogclient on a raspberry pi zero w to measure fridge temperatures, reporting minute by minute to the templog app what the 
+sensed temperature is. There would always be a power source present because of the fridge. 
+The Pi Zero W has wifi built in: I assumed the organisation would have a wifi network.
 The app calculates the maximum and minimum recorded temperature in each location per 24 hour period and stores it in a 
 database which, with password protection, can be viewed in a web browser at the IP address where the app is hosted.  
 Please feel free to fork the code and credit me where appropriate.
@@ -180,11 +181,11 @@ edit the file's line 5 and 18 to include your own domain
       $ sudo apt-get update
       $ sudo apt-get install certbot
       
-Replace example.com on line 185 of readme with your real actual domain name.
+Replace example.com on line 186 of readme with your real actual domain name.
 
       $ sudo certbot certonly --webroot -w /home/templogger/templog/certs/letsencrypt -d example.com
 
-*insert users into Database. Replace username and inbox@domain.com on line 193 of readme and mypassword on line 194 with 
+*insert users into Database. Replace username and inbox@domain.com on line 195 of readme and mypassword on line 196 with 
 real values.
 
       $ source venv/bin/activate
