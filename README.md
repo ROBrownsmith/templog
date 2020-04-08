@@ -151,6 +151,10 @@ log back in again
 
     $ source venv/bin/activate
 
+    (venv) $ flask db init
+    
+    (venv) $ flask db migrate
+    
     (venv) $ flask db upgrade
 
 *Gunicorn use with 1 worker
@@ -165,10 +169,28 @@ log back in again
 
     $ sudo cp /home/templogger/templog/conf_files/templog /etc/nginx/sites-enabled/templog
 
-edit the file at line 5 and 18 to include your own domain
+edit the file's line 5 and 18 to include your own domain
 
     $ sudo nano /etc/nginx/sites-enabled/templog
+    
+*Get SSL certificates for site so it will work over HTTPS by using certbot.
 
-*insert users into Database
+      $ sudo apt-get install software-properties-common
+      $ sudo add-apt-repository ppa:certbot/certbot
+      $ sudo apt-get update
+      $ sudo apt-get install certbot
+      
+Replace example.com on line 185 of readme with your real actual domain name.
 
-instructions for adding users to sqlite tables pending
+      $ sudo certbot certonly --webroot -w /home/templogger/templog/certs/letsencrypt -d example.com
+
+*insert users into Database. Replace username and inbox@domain.com on line 193 of readme and mypassword on line 194 with real values.
+
+      $ source venv/bin/activate
+
+      (venv) $ flask shell
+      
+      >>> u = User(username='username', email='inbox@domain.com')
+      >>> u.set_password('mypassword')
+      
+Now go to your website and log in using the details you've just added to see the temperatures recorded.
